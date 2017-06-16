@@ -3,7 +3,7 @@ import BluebirdPromise = require("bluebird");
 import U2f = require("u2f");
 import u2fApi = require("u2f-api");
 
-import Endpoints = require("../../server/endpoints");
+import Endpoints = require("../../../server/endpoints");
 import jslogger = require("js-logger");
 
 export default function(window: Window, $: JQueryStatic) {

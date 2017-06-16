@@ -1,16 +1,24 @@
 module.exports = function (grunt) {
   const buildDir = "dist";
+  const dockerImageName = "clems4ever/authelia";
+  const clientDirectory = "src/client";
+  const serverDirectory = "src/server";
+  const clientResourcesDirectory = `${clientDirectory}/resources`;
 
   grunt.initConfig({
     run: {
       options: {},
       "build": {
-        cmd: "npm",
-        args: ['run', 'build']
+        cmd: "./node_modules/.bin/tsc",
+        args: []
       },
       "tslint": {
+        cmd: "./node_modules/.bin/tslint",
+        args: ['-c', 'tslint.json', '-p', 'tsconfig.json']
+      },
+      "cover": {
         cmd: "npm",
-        args: ['run', 'tslint']
+        args: ["run-script", "cover"]
       },
       "test": {
         cmd: "npm",
@@ -18,7 +26,7 @@ module.exports = function (grunt) {
       },
       "docker-build": {
         cmd: "docker",
-        args: ['build', '-t', 'clems4ever/authelia', '.']
+        args: ['build', '-t', dockerImageName, '.']
       },
       "docker-restart": {
         cmd: "docker-compose",
@@ -42,31 +50,25 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'src/server/resources/',
         src: '**',
-        dest: `${buildDir}/src/server/resources/`
+        dest: `${buildDir}/${serverDirectory}/resources/`
       },
       views: {
         expand: true,
         cwd: 'src/server/views/',
         src: '**',
-        dest: `${buildDir}/src/server/views/`
+        dest: `${buildDir}/${serverDirectory}/views/`
       },
       images: {
         expand: true,
-        cwd: 'src/client/img',
+        cwd: `${clientResourcesDirectory}/img`,
         src: '**',
-        dest: `${buildDir}/src/server/public_html/img/`
-      },
-      thirdparties: {
-        expand: true,
-        cwd: 'src/client/thirdparties',
-        src: '**',
-        dest: `${buildDir}/src/server/public_html/js/`
-      },
+        dest: `${buildDir}/${serverDirectory}/public_html/img/`
+      }
     },
     browserify: {
       dist: {
-        src: ['dist/src/client/index.js'],
-        dest: `${buildDir}/src/server/public_html/js/authelia.js`,
+        src: [`${buildDir}/${clientDirectory}/lib/index.js`],
+        dest: `${buildDir}/${serverDirectory}/public_html/js/authelia.js`,
         options: {
           browserifyOptions: {
             standalone: 'authelia'
@@ -76,7 +78,7 @@ module.exports = function (grunt) {
     },
     watch: {
       views: {
-        files: ['src/server/views/**/*.pug'],
+        files: [`${serverDirectory}/views/**/*.pug`],
         tasks: ['copy:views'],
         options: {
           interrupt: false,
@@ -84,7 +86,7 @@ module.exports = function (grunt) {
         }
       },
       resources: {
-        files: ['src/server/resources/*.ejs'],
+        files: [`${serverDirectory}/resources/*.ejs`],
         tasks: ['copy:resources'],
         options: {
           interrupt: false,
@@ -92,7 +94,7 @@ module.exports = function (grunt) {
         }
       },
       images: {
-        files: ['src/client/img/**'],
+        files: [`${clientResourcesDirectory}/img/**`],
         tasks: ['copy:images'],
         options: {
           interrupt: false,
@@ -100,7 +102,7 @@ module.exports = function (grunt) {
         }
       },
       css: {
-        files: ['src/client/**/*.css'],
+        files: [`${clientResourcesDirectory}/css/*.css`],
         tasks: ['concat:css', 'cssmin'],
         options: {
           interrupt: true,
@@ -108,16 +110,16 @@ module.exports = function (grunt) {
         }
       },
       client: {
-        files: ['src/client/**/*.ts', 'test/client/**/*.ts'],
-        tasks: ['build'],
+        files: [`${clientDirectory}/**/*.ts', 'test/client/**/*.ts`],
+        tasks: ['build-dev'],
         options: {
           interrupt: true,
           atBegin: true
         }
       },
       server: {
-        files: ['src/server/**/*.ts', 'test/server/**/*.ts'],
-        tasks: ['build', 'run:docker-restart', 'run:make-dev-views' ],
+        files: [`${serverDirectory}/**/*.ts`, 'test/server/**/*.ts'],
+        tasks: ['build', 'run:make-dev-views', 'run:docker-restart'],
         options: {
           interrupt: true,
         }
@@ -125,14 +127,14 @@ module.exports = function (grunt) {
     },
     concat: {
       css: {
-        src: ['src/client/css/*.css'],
-        dest: `${buildDir}/src/server/public_html/css/authelia.css`
+        src: [`${clientResourcesDirectory}/css/*.css`],
+        dest: `${buildDir}/${serverDirectory}/public_html/css/authelia.css`
       },
     },
     cssmin: {
       target: {
         files: {
-          [`${buildDir}/src/server/public_html/css/authelia.min.css`]: [`${buildDir}/src/server/public_html/css/authelia.css`]
+          [`${buildDir}/${serverDirectory}/public_html/css/authelia.min.css`]: [`${buildDir}/${serverDirectory}/public_html/css/authelia.css`]
         }
       }
     }
@@ -147,7 +149,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build-dist']);
 
-  grunt.registerTask('build-resources', ['copy:resources', 'copy:views', 'copy:images', 'copy:thirdparties', 'concat:css']);
+  grunt.registerTask('build-resources', ['copy:resources', 'copy:views', 'copy:images', 'concat:css']);
 
   grunt.registerTask('build-dev', ['run:tslint', 'run:build', 'browserify:dist', 'build-resources', 'run:make-dev-views']);
   grunt.registerTask('build-dist', ['build-dev', 'run:minify', 'cssmin']);

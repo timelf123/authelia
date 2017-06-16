@@ -2,8 +2,8 @@
 import Endpoints = require("../../../src/server/endpoints");
 import BluebirdPromise = require("bluebird");
 
-import UISelectors = require("../../../src/client/firstfactor/UISelectors");
-import firstfactor from "../../../src/client/firstfactor/index";
+import UISelectors = require("../../../src/client/lib/firstfactor/UISelectors");
+import firstfactor from "../../../src/client/lib/firstfactor/index";
 import JQueryMock = require("../mocks/jquery");
 import Assert = require("assert");
 import sinon = require("sinon");

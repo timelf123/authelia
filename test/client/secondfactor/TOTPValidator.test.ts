@@ -1,5 +1,5 @@
 
-import TOTPValidator = require("../../../src/client/secondfactor/TOTPValidator");
+import TOTPValidator = require("../../../src/client/lib/secondfactor/TOTPValidator");
 import JQueryMock = require("../mocks/jquery");
 import BluebirdPromise = require("bluebird");
 import Assert = require("assert");

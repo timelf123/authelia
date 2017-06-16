@@ -1,7 +1,7 @@
 
 import BluebirdPromise = require("bluebird");
 
-import Endpoints = require("../../server/endpoints");
+import Endpoints = require("../../../server/endpoints");
 import Constants = require("./constants");
 import jslogger = require("js-logger");
 

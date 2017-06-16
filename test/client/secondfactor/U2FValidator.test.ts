@@ -1,5 +1,5 @@
 
-import U2FValidator = require("../../../src/client/secondfactor/U2FValidator");
+import U2FValidator = require("../../../src/client/lib/secondfactor/U2FValidator");
 import JQueryMock = require("../mocks/jquery");
 import U2FApiMock = require("../mocks/u2f-api");
 import { SignMessage } from "../../../src/server/lib/routes/secondfactor/u2f/sign_request/SignMessage";

@@ -1,5 +1,5 @@
 
-import FirstFactorValidator = require("../../../src/client/firstfactor/FirstFactorValidator");
+import FirstFactorValidator = require("../../../src/client/lib/firstfactor/FirstFactorValidator");
 import JQueryMock = require("../mocks/jquery");
 import BluebirdPromise = require("bluebird");
 import Assert = require("assert");

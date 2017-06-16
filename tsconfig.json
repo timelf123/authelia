@@ -16,7 +16,8 @@
         }
     },
     "includes": [
-        "src/**/*",
+        "src/server/**/*",
+        "src/client/**/*",
         "test/**/*"
     ]
 }

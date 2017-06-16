@@ -2,7 +2,7 @@ import FirstFactorValidator = require("./FirstFactorValidator");
 import JSLogger = require("js-logger");
 import UISelectors = require("./UISelectors");
 
-import Endpoints = require("../../server/endpoints");
+import Endpoints = require("../../../server/endpoints");
 
 export default function (window: Window, $: JQueryStatic, firstFactorValidator: typeof FirstFactorValidator, jslogger: typeof JSLogger) {
   function onFormSubmitted() {

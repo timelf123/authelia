@@ -2,8 +2,8 @@
 import U2fApi = require("u2f-api");
 import U2f = require("u2f");
 import BluebirdPromise = require("bluebird");
-import { SignMessage } from "../../server/lib/routes/secondfactor/u2f/sign_request/SignMessage";
-import Endpoints = require("../../server/endpoints");
+import { SignMessage } from "../../../server/lib/routes/secondfactor/u2f/sign_request/SignMessage";
+import Endpoints = require("../../../server/endpoints");
 
 function finishU2fAuthentication(responseData: U2fApi.SignResponse, $: JQueryStatic): BluebirdPromise<void> {
     return new BluebirdPromise<void>(function (resolve, reject) {

@@ -1,6 +1,6 @@
 import BluebirdPromise = require("bluebird");
 
-import Endpoints = require("../../server/endpoints");
+import Endpoints = require("../../../server/endpoints");
 import Constants = require("./constants");
 
 export default function (window: Window, $: JQueryStatic) {

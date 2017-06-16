@@ -5,7 +5,7 @@ import jslogger = require("js-logger");
 import TOTPValidator = require("./TOTPValidator");
 import U2FValidator = require("./U2FValidator");
 
-import Endpoints = require("../../server/endpoints");
+import Endpoints = require("../../../server/endpoints");
 
 import Constants = require("./constants");
 
