@@ -110,7 +110,7 @@ module.exports = function (grunt) {
         }
       },
       client: {
-        files: [`${clientDirectory}/**/*.ts', 'test/client/**/*.ts`],
+        files: [`${clientDirectory}/lib/**/*.ts', 'test/client/lib/**/*.ts`],
         tasks: ['build-dev'],
         options: {
           interrupt: true,
